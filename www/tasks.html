@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tasks</title>
+    <!-- Font Awesome CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-s6D2fT0YvqlmD7P7U4tZ4n6lX6jQITmC0F6dbQ5sB37rS6f7sQ1zq2FRbtUyQlyd1GQsl1FhITrtyj9BZtB7XQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/all.min.css" rel="stylesheet">
+
+    <style>
+        /* Reset some default styles */
+        body {
+            background: url('img/background.jpg') no-repeat center center fixed;
+            background-size: cover;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            height: 100vh;
+            margin: 0; /* Remove default margin */
+            font-family: Arial, sans-serif; /* Example font */
+        }
+
+        header {
+            background-color: #333;
+            color: #fff;
+            padding: 10px 0;
+            width: 100%; /* Ensure header spans full width */
+            position: fixed; /* Fix header at the top */
+            top: 0;
+            z-index: 1000; /* Ensure header is above other content */
+            display: flex; /* Add flex display for alignment */
+            justify-content: space-between; /* Ensure elements spread out */
+            align-items: center; /* Center align items */
+            padding: 0 20px; /* Add padding to header */
+        }
+
+        .logo {
+            margin: 0;
+            font-size: 1.5em;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .navbar-toggle {
+            display: none;
+            cursor: pointer;
+            padding: 15px 20px;
+        }
+
+        .navbar-toggle span {
+            display: block;
+            width: 25px;
+            height: 3px;
+            background-color: #fff;
+            margin-bottom: 5px;
+        }
+
+        .navbar-links {
+            display: flex;
+            gap: 10px;
+            align-items: center; /* Align items vertically */
+        }
+
+        .navbar-links a {
+            color: #fff;
+            text-decoration: none;
+            padding: 15px 20px;
+            display: block;
+            transition: all 0.3s ease;
+        }
+
+        .navbar-links a:hover {
+            background-color: #555;
+        }
+
+        .navbar-links.active {
+            display: block;
+        }
+
+        .main {
+            padding: 20px;
+            margin-top: 100px; /* Adjust margin-top value as needed */
+            width: 90%;
+            max-width: 600px;
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .dashboard-item {
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .dashboard-item h1 {
+            font-size: 1.5em;
+            margin: 0;
+        }
+
+        .dashboard-item .add-task-button {
+            padding: 10px 20px;
+            background-color: #444;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .dashboard-item .add-task-button:hover {
+            background-color: #444;
+        }
+
+        .dashboard-item .add-task-button:focus {
+            outline: none;
+        }
+
+        .dashboard-item .task-checkbox {
+            width: 20px;
+            height: 20px;
+            margin-right: 10px; /* Space between checkbox and task title */
+        }
+
+        .task-list {
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            background-color: #f9f9f9;
+        }
+
+        .task-item {
+            margin-bottom: 10px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            background-color: #fff;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .task-item .task-text {
+            flex: 1;
+        }
+
+        .task-item .task-actions {
+            margin-left: 10px;
+        }
+
+        @media screen and (max-width: 768px) {
+        .main {
+            margin-top: 120px; /* Adjust for smaller screens */
+            padding: 15px;
+            width: 95%;
+        }
+
+        /* Adjusted CSS for navbar */
+        .navbar-toggle {
+                display: none;
+                cursor: pointer;
+                padding: 15px 20px;
+            }
+
+            .navbar-links {
+                display: flex;
+                gap: 10px;
+            }
+
+            .navbar-links a {
+                color: #fff;
+                text-decoration: none;
+                padding: 15px 20px;
+                display: block;
+                transition: all 0.3s ease;
+            }
+
+            .navbar-links a:hover {
+                background-color: #555;
+            }
+
+            @media screen and (max-width: 768px) {
+                .navbar {
+                    flex-direction: column;
+                    align-items: flex-start;
+                }
+
+                .navbar-toggle {
+                    display: block;
+                }
+
+                .navbar-links {
+                    display: none;
+                    flex-direction: column;
+                    width: 100%;
+                    text-align: center;
+                    background-color: #333;
+                    position: absolute;
+                    top: 60px;
+                    left: 0;
+                    z-index: 999;
+                }
+
+                .navbar-links.active {
+                    display: flex;
+                }
+
+                .navbar-links a {
+                    padding: 10px;
+                    border-top: 1px solid #444;
+                    width: 100%;
+                }
+            }
+
+            .main {
+                margin-top: 120px; /* Ensure main content is below the navbar on small screens */
+                padding: 15px;
+                width: 95%;
+            }
+        }
+    </style>
+    <script type="module">
+        // Import the functions you need from the SDKs you need
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-analytics.js";
+        // TODO: Add SDKs for Firebase products that you want to use
+        // https://firebase.google.com/docs/web/setup#available-libraries
+
+        // Your web app's Firebase configuration
+        // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+        const firebaseConfig = {
+            apiKey: "AIzaSyBUEgBH6Nb3FDiqqX8DGD2nKJfBC6qhaaY",
+            authDomain: "myproject-b592b.firebaseapp.com",
+            databaseURL: "https://myproject-b592b-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "myproject-b592b",
+            storageBucket: "myproject-b592b.appspot.com",
+            messagingSenderId: "514793238886",
+            appId: "1:514793238886:web:6c2470e75efa6a3c1bd8a7",
+            measurementId: "G-V6RY13Y2L5"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const analytics = getAnalytics(app);
+    </script>
+</head>
+<body>
+    <!-- Header with logo and navbar -->
+    <header>
+        <h1 class="logo">Evernote</h1>
+        <div class="navbar">
+            <div class="navbar-toggle" id="navbarToggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            <div class="navbar-links" id="navbarLinks">
+                <a href="home.html">Home</a>
+                <a href="notes.html">Notes</a>
+                <a href="tasks.html">Tasks</a>
+                <a href="share.html">Share</a>
+                <a href="trash.html">Trash</a>
+            </div>
+        </div>
+    </header>
+    
+
+    <!-- Page content -->
+    <div class="main">
+        <section id="dashboard">
+            <div class="dashboard-item">
+                <h1>Tasks</h1>
+                <button class="add-task-button" onclick="showAddTaskForm()">Add Task</button>
+            </div>
+            <div class="dashboard-item" id="addTaskForm" style="display: none;">
+                <input type="text" id="taskTitle" placeholder="New Task" required>
+                <button class="action-button small-button" onclick="addNewTask()">+</button>
+            </div>
+            <div id="taskList" class="task-list">
+                <!-- Tasks will be dynamically added here -->
+            </div>
+        </section>
+    </div>
+
+    <!-- Font Awesome Script -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/js/all.min.js" integrity="sha512-WD4MPrxQIhBOeOXE8kXdAq39dJjWGqE+/8a8epV2dmk2y4UyOr7PBTJkJ62dOXGqMPRkMUYOzAfleDNNJwKm5A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <script>
+
+        document.getElementById('navbarToggle').addEventListener('click', function() {
+                document.getElementById('navbarLinks').classList.toggle('active');
+            });
+
+        // Array to store tasks
+        let tasks = [];
+
+        // Function to render tasks
+        function renderTasks() {
+            const taskList = document.getElementById('taskList');
+            taskList.innerHTML = ''; // Clear existing list
+
+            tasks.forEach((task, index) => {
+                const taskItem = document.createElement('div');
+                taskItem.classList.add('task-item');
+
+                taskItem.innerHTML = `
+                    <div class="task-text">
+                        <input type="checkbox" id="taskCheckbox_${index}" class="task-checkbox" onchange="toggleTaskCompletion(${index})" ${task.completed ? 'checked' : ''}>
+                        <label for="taskCheckbox_${index}">${task.title}</label>
+                    </div>
+                    <div class="task-actions">
+                        <button class="action-button" onclick="deleteTask(${index})"><i class="fas fa-trash-alt"></i>Delete</button>
+                    </div>
+                `;
+
+                taskList.appendChild(taskItem);
+            });
+        }
+
+        // Function to add a new task
+        function addNewTask() {
+            const taskTitleInput = document.getElementById('taskTitle');
+            const taskTitle = taskTitleInput.value.trim();
+
+            if (taskTitle) {
+                tasks.push({ title: taskTitle, completed: false });
+                renderTasks();
+                taskTitleInput.value = ''; // Reset input after adding task
+                hideAddTaskForm(); // Hide the add task form after adding
+            }
+        }
+
+        // Function to toggle task completion status
+        function toggleTaskCompletion(index) {
+            tasks[index].completed = !tasks[index].completed;
+            renderTasks();
+        }
+
+        // Function to delete a task
+        function deleteTask(index) {
+            tasks.splice(index, 1);
+            renderTasks();
+        }
+
+        // Function to show add task form
+        function showAddTaskForm() {
+            document.getElementById('addTaskForm').style.display = 'flex';
+        }
+
+        // Function to hide add task form
+        function hideAddTaskForm() {
+            document.getElementById('addTaskForm').style.display = 'none';
+        }
+
+        // Initialize tasks if there are any saved
+        // For demonstration, let's add some sample tasks
+        addNewTask("Task 1");
+        addNewTask("Task 2");
+        addNewTask("Task 3");
+
+        // Event listener for Finish button to add task and redirect to home.html
+        document.getElementById('finishButton').addEventListener('click', function() {
+            const taskTitle = document.getElementById('taskTitle').value.trim();
+            const taskDescription = document.getElementById('taskDescription').value.trim();
+
+            if (taskTitle !== '' && taskDescription !== '') {
+                // Retrieve existing tasks from localStorage or initialize an empty array
+                let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+
+                // Add new task to the array
+                tasks.push({ title: taskTitle, description: taskDescription });
+
+                // Store updated tasks back into localStorage
+                localStorage.setItem('tasks', JSON.stringify(tasks));
+
+                // Redirect to home.html
+                window.location.href = 'home.html';
+            } else {
+                alert('Please enter both title and description.');
+            }
+        });
+    </script>
+
+    <script src="js/jquery-3.2.1.min.js"></script>
+    <script src="js/popper.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/all.min.js"></script>
+
+</body>
+</html>

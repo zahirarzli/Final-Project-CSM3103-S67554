@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Evernote - Share</title>
+    <!-- Font Awesome CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-s6D2fT0YvqlmD7P7U4tZ4n6lX6jQITmC0F6dbQ5sB37rS6f7sQ1zq2FRbtUyQlyd1GQsl1FhITrtyj9BZtB7XQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/all.min.css" rel="stylesheet">
+
+    <style>
+        /* Reset some default styles */
+        body {
+            background: url('img/background.jpg') no-repeat center center fixed;
+            background-size: cover;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            height: 100vh;
+            margin: 0; /* Remove default margin */
+            font-family: Arial, sans-serif; /* Example font */
+        }
+
+        header {
+            background-color: #333;
+            color: #fff;
+            padding: 10px 0;
+            width: 100%; /* Ensure header spans full width */
+            position: fixed; /* Fix header at the top */
+            top: 0;
+            z-index: 1000; /* Ensure header is above other content */
+            display: flex; /* Add flex display for alignment */
+            justify-content: space-between; /* Ensure elements spread out */
+            align-items: center; /* Center align items */
+            padding: 0 20px; /* Add padding to header */
+        }
+
+        .logo {
+            margin: 0;
+            font-size: 1.5em;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .navbar-toggle {
+            display: none;
+            cursor: pointer;
+            padding: 15px 20px;
+        }
+
+        .navbar-links {
+            display: flex;
+            gap: 10px;
+            align-items: center; /* Align items vertically */
+        }
+
+        .navbar-links a {
+            color: #fff;
+            text-decoration: none;
+            padding: 15px 20px;
+            display: block;
+            transition: all 0.3s ease;
+        }
+
+        .navbar-links a:hover {
+            background-color: #555;
+        }
+
+        .navbar-links.active {
+            display: block;
+        }
+
+        .main {
+            padding: 20px;
+            margin-top: 100px; /* Adjust margin-top value as needed */
+            width: 90%;
+            max-width: 600px;
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .dashboard-item {
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .dashboard-item h1 {
+            font-size: 1.5em;
+            margin: 0;
+        }
+
+        .dashboard-item .button-group {
+            display: flex;
+            gap: 10px;
+        }
+
+        .button-group .close-button,
+        .button-group .invite-button {
+            background-color: #555;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .button-group .close-button:hover,
+        .button-group .invite-button:hover {
+            background-color: #444;
+        }
+
+        .access-section {
+            margin-top: 20px;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            background-color: #f9f9f9;
+        }
+
+        .access-section h2 {
+            font-size: 1.2em;
+            margin-bottom: 10px;
+        }
+
+        .access-list {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .access-list-item {
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .access-list-item:last-child {
+            border-bottom: none; /* Remove border for the last item */
+        }
+
+        .access-list-item .access-user {
+            font-weight: bold;
+        }
+
+        .user-input {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .user-input input[type="text"],
+        .user-input select {
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            flex: 1;
+            max-width: 200px;
+        }
+
+        .user-input select {
+            max-width: 150px;
+        }
+
+        .user-input .add-access-button {
+            background-color: #555;
+            color: #fff;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .user-input .add-access-button:hover {
+            background-color: #444;
+        }
+
+        .bottom-buttons {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 20px;
+        }
+
+        .bottom-buttons button {
+            background-color: #555;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin-left: 10px;
+        }
+
+        .bottom-buttons button:hover {
+            background-color: #333;
+        }
+
+        .bottom-buttons button:focus {
+            outline: none;
+        }
+
+        @media screen and (max-width: 768px) {
+            .main {
+                margin-top: 120px; /* Adjust for smaller screens */
+                padding: 15px;
+                width: 95%;
+            }
+
+            .navbar {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .navbar-toggle {
+                display: block;
+            }
+
+            .navbar-links {
+                display: none;
+                flex-direction: column;
+                width: 100%;
+                text-align: center;
+                background-color: #333;
+                position: absolute;
+                top: 60px;
+                left: 0;
+                z-index: 999;
+            }
+
+            .navbar-links.active {
+                display: flex;
+            }
+
+            .navbar-links a {
+                padding: 10px;
+                border-top: 1px solid #444;
+                width: 100%;
+            }
+
+            .main {
+                margin-top: 120px; /* Ensure main content is below the navbar on small screens */
+                padding: 15px;
+                width: 95%;
+            }
+        }
+    </style>
+    <script type="module">
+        // Import the functions you need from the SDKs you need
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-analytics.js";
+        import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyBUEgBH6Nb3FDiqqX8DGD2nKJfBC6qhaaY",
+            authDomain: "myproject-b592b.firebaseapp.com",
+            databaseURL: "https://myproject-b592b-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "myproject-b592b",
+            storageBucket: "myproject-b592b.appspot.com",
+            messagingSenderId: "514793238886",
+            appId: "1:514793238886:web:6c2470e75efa6a3c1bd8a7",
+            measurementId: "G-V6RY13Y2L5"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const analytics = getAnalytics(app);
+        const db = getFirestore(app); // Initialize Firestore
+
+        async function storeDataInFirebase(data) {
+        try {
+            const docRef = await addDoc(collection(db, "dataCollection"), {
+                email: data
+            });
+            console.log("Document written with ID: ", docRef.id);
+            alert("Data stored successfully in Firebase!"); // Notify user
+            // Optionally, you can add UI updates or notifications here
+        } catch (error) {
+            console.error("Error adding document: ", error);
+            alert("Error storing data in Firebase: " + error.message); // Notify user
+            // Handle errors or display error messages
+        }
+    }
+
+    let accessList = []; // Array to store access items
+
+    async function addAccess() {
+        const userNameInput = document.getElementById('userName');
+        const accessLevelSelect = document.getElementById('accessLevel');
+
+        const userName = userNameInput.value.trim();
+        const accessLevel = accessLevelSelect.value;
+
+        if (userName !== '') {
+            accessList.push({ userName, accessLevel });
+            renderAccessList();
+            userNameInput.value = ''; // Clear input field
+
+            // Add the access to Firebase Firestore
+            try {
+                const docRef = await addDoc(collection(db, "accessList"), {
+                    userName: userName,
+                    accessLevel: accessLevel
+                });
+                console.log("Document written with ID: ", docRef.id);
+            } catch (e) {
+                console.error("Error adding document: ", e);
+            }
+        }
+    }
+
+    function renderAccessList() {
+        const accessListElement = document.getElementById('accessList');
+        accessListElement.innerHTML = ''; // Clear existing list
+
+        accessList.forEach((access, index) => {
+            const accessListItem = document.createElement('li');
+            accessListItem.classList.add('access-list-item');
+
+            accessListItem.innerHTML = `
+                <span class="access-user">${access.userName}</span>
+                <span>${access.accessLevel === 'readWrite' ? 'Read and Write' : 'Read only'}</span>
+                <button class="action-button" onclick="removeAccess(${index})"><i class="fas fa-times"></i></button>
+            `;
+
+            accessListElement.appendChild(accessListItem);
+        });
+    }
+
+    function removeAccess(index) {
+        accessList.splice(index, 1);
+        renderAccessList();
+    }
+
+    function closeShare() {
+        console.log('Closing share section...');
+    }
+
+    function inviteFriends() {
+        console.log('Inviting friends...');
+    }
+
+    function shareLink() {
+        console.log('Sharing link...');
+    }
+
+    function copyLink() {
+        console.log('Copying link...');
+    }
+
+    document.getElementById('navbarToggle').addEventListener('click', function() {
+        document.getElementById('navbarLinks').classList.toggle('active');
+    });
+    </script>
+</head>
+<body>
+    <!-- Header with logo and navbar -->
+    <header>
+        <h1 class="logo">Evernote</h1>
+        <div class="navbar">
+            <div class="navbar-toggle" id="navbarToggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            <div class="navbar-links" id="navbarLinks">
+                <a href="home.html">Home</a>
+                <a href="notes.html">Notes</a>
+                <a href="tasks.html">Tasks</a>
+                <a href="share.html">Share</a>
+                <a href="trash.html">Trash</a>
+            </div>
+        </div>
+    </header>
+    
+    <!-- Page content -->
+    <div class="main">
+        <section id="share">
+            <div class="dashboard-item">
+                <h1>Sharing link</h1>
+                <div class="button-group">
+                    <button class="close-button" onclick="closeShare()">Close</button>
+                    <button class="invite-button" onclick="inviteFriends()">Invite</button>
+                </div>
+            </div>
+
+            <!-- Access section -->
+            <div class="access-section">
+                <h2>Access</h2>
+                <ul id="accessList" class="access-list">
+                    <!-- Access list items will be dynamically added here -->
+                </ul>
+                <div class="user-input">
+                    <input type="text" id="userName" placeholder="Enter name or email">
+                    <select id="accessLevel">
+                        <option value="readWrite">Read and Write</option>
+                        <option value="readOnly">Read only</option>
+                    </select>
+                    <button class="add-access-button" onclick="addAccess()">Add Access</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Bottom buttons -->
+        <div class="bottom-buttons">
+            <button onclick="shareLink()">Share</button>
+            <button onclick="copyLink()">Copy Link</button>
+        </div>
+    </div>
+
+    <!-- Font Awesome Script -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/js/all.min.js" integrity="sha512-WD4MPrxQIhBOeOXE8kXdAq39dJjWGqE+/8a8epV2dmk2y4UyOr7PBTJkJ62dOXGqMPRkMUYOzAfleDNNJwKm5A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <!-- Firebase App (the core Firebase SDK) -->
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js"></script>
+    <!-- Firebase Firestore -->
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js"></script>
+    <!-- Initialize Firebase -->
+    <script src="js/firebase-init.js"></script>
+
+    <script src="js/jquery-3.2.1.min.js"></script>
+    <script src="js/popper.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+</body>
+</html>

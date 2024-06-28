@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notes</title>
+    <!-- Font Awesome CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-s6D2fT0YvqlmD7P7U4tZ4n6lX6jQITmC0F6dbQ5sB37rS6f7sQ1zq2FRbtUyQlyd1GQsl1FhITrtyj9BZtB7XQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/all.min.css" rel="stylesheet">
+
+    <style>
+        /* Reset some default styles */
+        body {
+            background: url('img/background.jpg') no-repeat center center fixed;
+            background-size: cover;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            height: 100vh;
+            margin: 0; /* Remove default margin */
+            font-family: Arial, sans-serif; /* Example font */
+        }
+
+        header {
+            background-color: #333;
+            color: #fff;
+            padding: 10px 0;
+            width: 100%; /* Ensure header spans full width */
+            position: fixed; /* Fix header at the top */
+            top: 0;
+            z-index: 1000; /* Ensure header is above other content */
+            display: flex; /* Add flex display for alignment */
+            justify-content: space-between; /* Ensure elements spread out */
+            align-items: center; /* Center align items */
+            padding: 0 20px; /* Add padding to header */
+        }
+
+        .logo {
+            margin: 0;
+            font-size: 1.5em;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .navbar-toggle {
+            display: none; /* Initially hide on larger screens */
+            cursor: pointer;
+            padding: 15px 20px;
+        }
+
+        .navbar-toggle span {
+            display: block;
+            width: 25px;
+            height: 3px;
+            background-color: #fff;
+            margin-bottom: 5px;
+            transition: all 0.3s ease; /* Smooth transition */
+        }
+
+        .navbar-links {
+            display: flex;
+            gap: 10px;
+        }
+
+        .navbar-links a {
+            color: #fff;
+            text-decoration: none;
+            padding: 15px 20px;
+            display: block;
+            transition: all 0.3s ease;
+        }
+
+        .navbar-links.active {
+            display: block;
+        }
+
+        .main {
+            padding: 20px;
+            margin-top: 100px; /* Adjust margin-top value as needed */
+            width: 90%;
+            max-width: 600px;
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .dashboard-item {
+            margin-bottom: 20px;
+            text-align: left; /* Align content to the left */
+        }
+
+        .dashboard-item h2 {
+            font-size: 1.2em;
+            text-align: left; /* Align titles to the left */
+        }
+
+        .action-button {
+            padding: 10px;
+            background-color: #555;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            margin-top: 10px; /* Add margin-top */
+        }
+
+        .action-button i {
+            margin-right: 5px; /* Add spacing between icon and text */
+        }
+
+        .action-button:hover {
+            background-color: #444;
+        }
+
+        .form-container {
+            margin-bottom: 20px; /* Add margin between form and next item */
+        }
+
+        @media screen and (max-width: 768px) {
+            .main {
+                margin-top: 120px; /* Adjust for smaller screens */
+                padding: 15px;
+                width: 95%;
+            }
+
+            .navbar-toggle {
+                display: block; /* Show hamburger button on smaller screens */
+            }
+
+            .navbar-links {
+                display: none;
+                flex-direction: column;
+                width: 100%;
+                text-align: center;
+                background-color: #333;
+                position: absolute;
+                top: 60px;
+                left: 0;
+                z-index: 999;
+            }
+
+            .navbar-links.active {
+                display: flex;
+            }
+
+            .navbar-links a {
+                padding: 10px;
+                border-top: 1px solid #444;
+                width: 100%;
+            }
+        }
+    </style>
+    
+</head>
+<body>
+    <!-- Header with logo and navbar -->
+    <header>
+        <h1 class="logo">Evernote</h1>
+        <div class="navbar">
+            <div class="navbar-toggle" id="navbarToggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            <div class="navbar-links" id="navbarLinks">
+                <a href="home.html">Home</a>
+                <a href="notes.html">Notes</a>
+                <a href="tasks.html">Tasks</a>
+                <a href="share.html">Share</a>
+                <a href="trash.html">Trash</a>
+            </div>
+        </div>
+    </header>
+    
+
+    <!-- Page content -->
+    <div class="main">
+        <section id="dashboard">
+            <div class="dashboard-item">
+                <input type="text" id="noteTitle" placeholder="Title">
+            </div>
+            <div class="dashboard-item">
+                <form id="noteForm">
+                    <textarea id="noteContent" placeholder="Start writing..." style="font-weight: normal;"></textarea>
+                </form>
+            </div>
+            <div class="dashboard-item button-bar">
+                <!-- Only keep the Save button -->
+                <button id="saveButton" class="action-button"><i class="fas fa-save"></i> Save</button>
+            </div>
+        </section>
+    </div>
+
+    <!-- Firebase JavaScript SDK -->
+    <script type="module">
+        // Import the functions you need from the SDKs you need
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-analytics.js";
+        import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyBUEgBH6Nb3FDiqqX8DGD2nKJfBC6qhaaY",
+            authDomain: "myproject-b592b.firebaseapp.com",
+            databaseURL: "https://myproject-b592b-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "myproject-b592b",
+            storageBucket: "myproject-b592b.appspot.com",
+            messagingSenderId: "514793238886",
+            appId: "1:514793238886:web:6c2470e75efa6a3c1bd8a7",
+            measurementId: "G-V6RY13Y2L5"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const analytics = getAnalytics(app);
+        const database = getDatabase(app);
+      
+        // Event listener for Save button
+        document.getElementById('saveButton').addEventListener('click', async function() {
+            const noteTitle = document.getElementById('noteTitle').value.trim();
+            const noteContent = document.getElementById('noteContent').value.trim();
+    
+            if (noteTitle !== '' && noteContent !== '') {
+                try {
+                    // Set data in Firebase database
+                    await set(ref(database, 'notes/' + noteTitle), {
+                        title: noteTitle,
+                        content: noteContent,
+                        timestamp: new Date().toISOString()
+                    });
+                    alert('Note saved successfully!');
+                    // Redirect to home.html or handle success as needed
+                    window.location.href = 'home.html';
+                } catch (error) {
+                    console.error("Error adding document: ", error);
+                    alert('Failed to save note. Please try again.');
+                }
+            } else {
+                alert('Please enter both title and content.');
+            }
+        });
+    </script>
+
+</body>
+</html>
